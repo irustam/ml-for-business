@@ -1,5 +1,6 @@
 import config
-from load_model import load_model, get_model_features
+import json
+from load_model import load_model
 from flask import Flask, request, jsonify
 import pandas as pd
 import numpy as np
@@ -40,21 +41,31 @@ def predict():
 	# ensure an image was properly uploaded to our endpoint
 	if request.method == "POST":
 		#Load data
-		request_json = request.get_json()
+		request_json = json.loads(request.get_json())
 		dt = strftime("[%Y-%b-%d %H:%M:%S]")
 
 		#Check secret API key
-		get_sectret_key = request_json['SECRET_API_KEY']
+		try:
+			get_sectret_key = request_json['SECRET_API_KEY']
+		except KeyError as e:
+			data['predictions'] = config.no_key
+			return jsonify(data)
+		except TypeError as e:
+			data['predictions'] = config.no_key
+			return jsonify(data)
+
 		if get_sectret_key != SECRET_API_KEY:
 			logger.warning(f'{dt} Exception: {config.bad_key}')
 			data['predictions'] = config.bad_key
 			return jsonify(data)
 
 		#Get features values
-		features_list = get_model_features(model)
 		feat_values_dict = {}
-		for feat in features_list:
-			feat_values_dict[feat] = [request_json[feat] or np.nan]
+		for feat in config.model_features:
+			try:
+				feat_values_dict[feat] = [request_json[feat]]
+			except KeyError as e:
+				feat_values_dict[feat] = [np.nan]
 
 		logger.info(f'{dt} Data: {feat_values_dict}')
 		try:
@@ -63,8 +74,12 @@ def predict():
 			logger.warning(f'{dt} Exception: {str(e)}')
 			data['predictions'] = str(e)
 			return jsonify(data)
+		except ValueError as e:
+			logger.warning(f'{dt} Exception: {str(e)}')
+			data['predictions'] = str(e)
+			return jsonify(data)
 
-		data["predictions"] = preds[:, 1][0]
+		data["predictions"] = preds[0]
 		# indicate that the request was a success
 		data["success"] = True
 

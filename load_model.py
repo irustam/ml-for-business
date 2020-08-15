@@ -13,11 +13,6 @@ def load_model():
 	return model
 
 
-def get_model_features(model):
-	#Get features list from Catboost model
-	return model.steps[1][1].get_feature_importance(prettified=True)['Feature Id'].to_list()
-
-
 if __name__ == '__main__':
 	model = load_model()
 	if model:

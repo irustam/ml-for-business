@@ -1,4 +1,5 @@
 /__pycache__
 /.idea
 /docker-run-command.txt
-/test_run.py
+/*.log
+/*.env
