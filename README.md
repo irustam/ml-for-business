@@ -7,9 +7,13 @@
 docker pull irustam/mlprojectcarpricefront:latest
 ```
 
-Запуск контейнера осуществляется командой:
+Запуск контейнера в интерактивном режиме:
 ``` 
 docker run --rm -e "MODEL_URL=http://localhost:5000/api/predict/" -e "SECRET_API_KEY=K6ASUGFIuGW3IE839239gASJH" -it -p 5001:5001 irustam/mlprojectcarpricefront:latest
+```
+Запуск контейнера в фоновом режиме:
+``` 
+docker run --rm -e "MODEL_URL=http://localhost:5000/api/predict/" -e "SECRET_API_KEY=K6ASUGFIuGW3IE839239gASJH" -d -p 5001:5001 irustam/mlprojectcarpricefront:latest
 ```
 Вместо __localhost:5000__ из команды запуска укажите хост и порт, где развернут контейнер с моделью.
 
