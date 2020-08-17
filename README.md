@@ -4,6 +4,8 @@
 
 Для обучения модели использован датасет https://www.kaggle.com/CooperUnion/cardataset
 
+EDA и создание пайплайна модели показано здесь https://github.com/irustam/ml-for-business/blob/lesson8/homework8.ipynb
+
 Данный проект упакован в докер-контейнер и разворачивается командой:
 ``` 
 docker pull irustam/mlprojectcarpriceback:latest
