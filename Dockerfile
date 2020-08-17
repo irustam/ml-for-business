@@ -19,4 +19,4 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 
 # запускаем приложение Python
-CMD ["gunicorn", "-w", "5", "-b", "0.0.0.0:5000", "run:app"]
+CMD ["gunicorn", "-w", "5", "-b", "0.0.0.0:5000", "--debug", "run:app"]
